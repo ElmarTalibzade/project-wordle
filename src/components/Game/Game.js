@@ -1,13 +1,10 @@
 import React from 'react';
-
 import {sample} from '../../utils';
 import {WORDS} from '../../data';
-
 import styles from '../../styles.css';
 import {MAX_LETTER_COUNT, NUM_OF_GUESSES_ALLOWED} from "../../constants";
 import {checkGuess} from "../../game-helpers";
 import Guess from "../Guess";
-import guess from "../Guess";
 
 // Pick a random word on every pageload.
 const answer = sample(WORDS);
@@ -29,8 +26,9 @@ function Game() {
             return;
         }
 
-        if (guessCount + 1 < NUM_OF_GUESSES_ALLOWED) {
+        if (guessCount >= NUM_OF_GUESSES_ALLOWED) {
             // todo: handle this
+            return;
         }
 
         const newGuesses = [...guesses];
