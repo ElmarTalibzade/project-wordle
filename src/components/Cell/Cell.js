@@ -1,8 +1,11 @@
 import React from 'react';
-import styles from '../../styles.css';
 
-function Cell(status, letter) {
-    return <div className={styles.cell}>{letter ?? ''}</div>;
+function Cell({letter, status}) {
+    if (status) {
+        return <div className={`cell ${status}`}>{letter}</div>;
+    }
+
+    return <div className="cell"></div>;
 }
 
 export default Cell;

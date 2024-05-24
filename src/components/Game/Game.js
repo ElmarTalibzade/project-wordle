@@ -7,6 +7,7 @@ import styles from '../../styles.css';
 import {MAX_LETTER_COUNT, NUM_OF_GUESSES_ALLOWED} from "../../constants";
 import {checkGuess} from "../../game-helpers";
 import Guess from "../Guess";
+import guess from "../Guess";
 
 // Pick a random word on every pageload.
 const answer = sample(WORDS);
@@ -16,18 +17,26 @@ console.info({answer});
 function Game() {
     const [guessCount, setGuessCount] = React.useState(0);
     const [guessInput, setGuessInput] = React.useState('');
-    const [guesses, setGuesses] = React.useState(Array(NUM_OF_GUESSES_ALLOWED).fill({
-        letters: Array(MAX_LETTER_COUNT).fill({
-            letter: undefined,
-            status: undefined
-        })
-    }));
-
-    console.log("Guesses", guesses);
+    const [guesses, setGuesses] = React.useState(new Array(NUM_OF_GUESSES_ALLOWED).fill(new Array(MAX_LETTER_COUNT).fill({
+        letter: '',
+        status: '',
+    })));
 
     function submitGuess(e) {
         e.preventDefault();
 
+        if (guessInput.length !== MAX_LETTER_COUNT) {
+            return;
+        }
+
+        if (guessCount + 1 < NUM_OF_GUESSES_ALLOWED) {
+            // todo: handle this
+        }
+
+        const newGuesses = [...guesses];
+        newGuesses[guessCount] = checkGuess(guessInput, answer);
+
+        setGuesses(newGuesses);
         setGuessInput('');
         setGuessCount(guessCount + 1);
     }
@@ -36,7 +45,7 @@ function Game() {
         <>
             <div className={styles.guessResults}>
                 {guesses.map((guess, i) => (
-                    <Guess key={i} letters={guess.letters}/>
+                    <Guess key={i} guess={guess}/>
                 ))}
             </div>
 
