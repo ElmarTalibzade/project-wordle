@@ -31,16 +31,17 @@ function Game() {
         const newGuesses = [...guesses];
         newGuesses[guessCount] = checkGuess(guessInput, answer);
 
+        const newGuessCount = guessCount + 1;
         setGuesses(newGuesses);
         setGuessInput('');
-        setGuessCount(guessCount + 1);
+        setGuessCount(newGuessCount);
 
         if (guessInput === answer) {
             setOutcome('win')
             return;
         }
 
-        if (guessCount >= NUM_OF_GUESSES_ALLOWED) {
+        if (newGuessCount >= NUM_OF_GUESSES_ALLOWED) {
             setOutcome('loss')
         }
     }
@@ -55,7 +56,7 @@ function Game() {
 
             <form className={styles.guessInputWrapper} onSubmit={submitGuess}>
                 <label htmlFor="guess-input">Enter guess:</label>
-                <input id="guess-input" type="text" value={guessInput} onChange={(e) => setGuessInput(e.target.value.toUpperCase())}/>
+                <input disabled={!!outcome} id="guess-input" type="text" value={guessInput} onChange={(e) => setGuessInput(e.target.value.toUpperCase())}/>
             </form>
 
             <Banner outcome={outcome} guessCount={guessCount} correctAnswer={answer}/>
