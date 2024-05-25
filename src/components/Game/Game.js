@@ -12,14 +12,23 @@ const answer = sample(WORDS);
 // To make debugging easier, we'll log the solution in the console.
 console.info({answer});
 
+const defaultGuesses = new Array(NUM_OF_GUESSES_ALLOWED).fill(new Array(MAX_LETTER_COUNT).fill({
+    letter: '',
+    status: '',
+}));
+
 function Game() {
     const [outcome, setOutcome] = useState('');
     const [guessCount, setGuessCount] = React.useState(0);
     const [guessInput, setGuessInput] = React.useState('');
-    const [guesses, setGuesses] = React.useState(new Array(NUM_OF_GUESSES_ALLOWED).fill(new Array(MAX_LETTER_COUNT).fill({
-        letter: '',
-        status: '',
-    })));
+    const [guesses, setGuesses] = React.useState([...defaultGuesses]);
+
+    function resetGame() {
+        setGuessCount(0);
+        setGuessInput('');
+        setGuesses([...defaultGuesses]);
+        setOutcome('');
+    }
 
     function submitGuess(e) {
         e.preventDefault();
@@ -58,6 +67,7 @@ function Game() {
                 <label htmlFor="guess-input">Enter guess:</label>
                 <input disabled={!!outcome} id="guess-input" type="text" value={guessInput} onChange={(e) => setGuessInput(e.target.value.toUpperCase())}/>
             </form>
+            <button onClick={resetGame}>Reset</button>
 
             <Banner outcome={outcome} guessCount={guessCount} correctAnswer={answer}/>
         </>
